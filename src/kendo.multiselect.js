@@ -52,7 +52,7 @@ var __meta__ = {
         READONLY = "readonly",
         ns = ".kendoMultiSelect",
         CLICK = "click" + ns,
-        KEYDOWN = "keydown" + ns,
+        KEYUP = "keyup" + ns,
         MOUSEENTER = "mouseenter" + ns,
         MOUSELEAVE = "mouseleave" + ns,
         HOVEREVENTS = MOUSEENTER + " " + MOUSELEAVE,
@@ -419,7 +419,7 @@ var __meta__ = {
                     .on(HOVEREVENTS, that._toggleHover)
                     .on("mousedown" + ns + " touchend" + ns, proxy(that._wrapperMousedown, that));
 
-                that.input.on(KEYDOWN, proxy(that._keydown, that))
+                that.input.on(KEYUP, proxy(that._keyup, that))
                     .on("paste" + ns, proxy(that._search, that))
                     .on("focus" + ns, proxy(that._inputFocus, that))
                     .on("focusout" + ns, proxy(that._inputFocusout, that));
@@ -706,7 +706,7 @@ var __meta__ = {
             this._close();
         },
 
-        _keydown: function(e) {
+        _keyup: function(e) {
             var that = this;
             var key = e.keyCode;
             var tag = that._currentTag;
@@ -799,7 +799,7 @@ var __meta__ = {
                         that.currentTag($(tag));
                     }
                 }
-            } else if ((key === keys.DELETE || key === keys.BACKSPACE) && !hasValue) {
+            } else if ((key === keys.DELETE || key === keys.BACKSPACE) && hasValue === that._prev) {
                 if (key === keys.BACKSPACE && !tag) {
                     tag = $(that.tagList[0].lastChild);
                 }
